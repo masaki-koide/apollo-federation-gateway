@@ -1,0 +1,39 @@
+{
+  "private": true,
+  "name": "apollo-federation-gateway",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "masaki-koide <ikasama0324@gmail.com>",
+  "repository": "ssh://git@github.com/masaki-koide/apollo-federation-gateway.git",
+  "main": "index.js",
+  "scripts": {
+    "format": "npm run format:package-json && npm run format:src",
+    "format:package-json": "prettier-package-json --write",
+    "format:src": "prettier --write src/**/*.ts",
+    "start": "concurrently -k 'npm:start:gateway' 'npm:start:transformed-server' 'npm:start:federation-server'",
+    "start:federation-server": "ts-node src/services/federation-server",
+    "start:gateway": "wait-on tcp:4001 && wait-on tcp:4002 && ts-node src/services/gateway",
+    "start:transformed-server": "ts-node src/services/transformed-server",
+    "start:watch": "nodemon --signal SIGINT -e ts,js -x npm run start",
+    "type-check": "tsc"
+  },
+  "dependencies": {
+    "@apollo/federation": "0.25.1",
+    "@apollo/gateway": "0.28.2",
+    "apollo-server": "2.25.0",
+    "graphql": "15.5.0",
+    "graphql-tools": "7.0.5",
+    "graphql-transform-federation": "2.2.0"
+  },
+  "devDependencies": {
+    "@types/graphql": "14.5.0",
+    "@types/node": "15.12.1",
+    "concurrently": "6.2.0",
+    "nodemon": "2.0.7",
+    "prettier": "2.3.1",
+    "prettier-package-json": "2.6.0",
+    "ts-node": "10.0.0",
+    "typescript": "4.3.2",
+    "wait-on": "5.3.0"
+  }
+}
